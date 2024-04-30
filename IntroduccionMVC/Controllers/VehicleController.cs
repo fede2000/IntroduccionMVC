@@ -25,6 +25,23 @@ namespace IntroduccionMVC.Controllers
             return View();
         }
 
+        //Post
+        [HttpPost]
+        public async Task<IActionResult> Create(Vehiculo vehiculo)
+        {
+            try
+            {
+                _dbContext.Add(vehiculo);
+                await _dbContext.SaveChangesAsync();
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction(nameof(Index));
+                //throw;
+            }
+        }
+
         public IActionResult Index()
         {
             var vehiculos = _dbContext.Vehiculos.ToList();
