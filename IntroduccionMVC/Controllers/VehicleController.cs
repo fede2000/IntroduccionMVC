@@ -15,6 +15,16 @@ namespace IntroduccionMVC.Controllers
             _dbContext = dbContext;
         }
 
+        public IActionResult Edit()
+        {
+            return View();
+        }
+
+        public IActionResult New()
+        {
+            return View();
+        }
+
         public IActionResult Index()
         {
             var vehiculos = _dbContext.Vehiculos.ToList();
@@ -34,21 +44,21 @@ namespace IntroduccionMVC.Controllers
             //    });
             //}
 
+            var vehiclesList = vehiculos
+                .Select(v => new VehicleListModel
+                {
+                    Id = v.Id,
+                    Dominio = v.Dominio,
+                    AnioFabricacion = v.AnioFabricacion
+                })
+                .ToList();
 
-            // con LINQ
-            var model = new VehicleListViewModel
-            {
-                Vehiculos = vehiculos
-                    .Select(v => new VehicleListModel
-                    {
-                        Id = v.Id,
-                        Dominio = v.Dominio,
-                        AnioFabricacion = v.AnioFabricacion
-                    })
-                    .ToList()
-            };
+            ViewData["miTitulo"] = "My Vehicles";
+            // ViewData["Vehicles"] = vehiclesList;
 
-            return View("List", model);
+            ViewBag.Vehicles = vehiclesList;
+
+            return View("List");
         }
     }
 }
